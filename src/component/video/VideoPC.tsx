@@ -1,15 +1,11 @@
-import React, { Dispatch, useEffect } from "react";
+import React from "react";
 
 interface Props {
   video: HTMLVideoElement | null;
   getInstance: (instance: HTMLVideoElement | null) => void;
   play: () =>
     | {
-        ppBtn: void | Promise<void>;
-        reset: string;
-        mute: void;
-        posVolume: false | void;
-        negVolume: false | void;
+        [x: string]: void | number;
       }
     | any;
 }
@@ -69,8 +65,8 @@ const VideoPC: React.FC<Props> = ({ video, getInstance, play }) => (
       </button>
     </div>
     <div></div>
-    <div>{video && <h1>{video.volume}</h1>}</div>
-    <div>{video && <h1>{video.muted}</h1>}</div>
+    <div>{video && <h1>{Math.floor(video.volume * 10)}</h1>}</div>
+    <div>{video && `${video.muted}`}</div>
   </div>
 );
 

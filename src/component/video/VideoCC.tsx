@@ -11,31 +11,26 @@ const VideoCC = () => {
   const play = () => {
     if (!!video?.canPlayType) {
       const currentVolume = Math.floor(video.volume * 10) / 10;
-
       let obj = {
         get ppBtn(): Promise<void> | void {
           return video.paused || video.ended ? video.play() : video.pause();
         },
-        get reset(): void {
+        get reset(): number {
           video.pause();
-          video.currentTime = 0;
-          return;
+          return (video.currentTime = 0);
         },
-        get mute(): false | void {
-          console.table(video.muted);
-          return setVideo({ ...video, muted: true });
+        get mute(): void {
+          return setVideo({ ...video, muted: (video.muted = !video.muted) });
         },
-        get posVolume(): false | void {
-          return (
-            currentVolume < 1 &&
-            setVideo({ ...video, volume: (video.volume += 0.05) })
-          );
+        get posVolume(): void {
+          const volume =
+            currentVolume < 1 ? (video.volume += 0.1) : video.volume;
+          return setVideo({ ...video, volume: volume });
         },
-        get negVolume(): false | void {
-          return (
-            currentVolume > 0 &&
-            setVideo({ ...video, volume: (video.volume -= 0.05) })
-          );
+        get negVolume(): void {
+          const volume =
+            currentVolume > 0 ? (video.volume -= 0.1) : video.volume;
+          return setVideo({ ...video, volume: volume });
         },
       };
       return obj;
