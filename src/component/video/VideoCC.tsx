@@ -5,19 +5,18 @@ const VideoCC = () => {
   const [video, setVideo] = useState<HTMLVideoElement | null>(null);
 
   const getInstance = (instance: HTMLVideoElement | null) => {
-    !!instance && setVideo(instance);
+    setVideo(instance);
   };
 
-  const play = () => {
-    if (!!video?.canPlayType) {
-      const currentVolume = Math.floor(video.volume * 10) / 10;
-      let obj = {
+  const currentVolume = Math.floor((video?.volume ?? 0) * 10) / 10;
+
+  const play = video && {
         get ppBtn(): Promise<void> | void {
           return video.paused || video.ended ? video.play() : video.pause();
         },
-        get reset(): number {
-          video.pause();
-          return (video.currentTime = 0);
+        get reset(): void {
+          video.currentTime = 0;
+          return video.pause();
         },
         get mute(): void {
           return setVideo({ ...video, muted: (video.muted = !video.muted) });
@@ -32,12 +31,14 @@ const VideoCC = () => {
             currentVolume > 0 ? (video.volume -= 0.1) : video.volume;
           return setVideo({ ...video, volume: volume });
         },
-      };
-      return obj;
-    }
+        get fullScreen(): Promise<void> {
+          return  video.requestFullscreen();
+        }
   };
 
-  return <VideoPC video={video} getInstance={getInstance} play={play} />;
+
+
+  return  <VideoPC video={video} getInstance={getInstance} play={play} />;
 };
 
 export default VideoCC;
