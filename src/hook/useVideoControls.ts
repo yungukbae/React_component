@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { Video } from "./types";
 
 export const useVideoControls = () => {
-  const [video, setVideo] = useState<Video>(null);
+  const [video, setVideo] = useState<Video | null>(null);
   const [isPlay, setIsPlay] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState(0);
 
   const currentVolume = Math.floor((video?.volume ?? 0) * 10) / 10;
 
@@ -14,40 +13,44 @@ export const useVideoControls = () => {
       return video.paused || video.ended ? video.play() : video.pause();
     },
     get reset(): void {
-      setCurrentTime(0);
+      video.pause();
       video.currentTime = 0;
-      return video.pause();
+      return setVideo({ ...video, currentTime: 0 });
     },
     get mute(): void {
       return setVideo({ ...video, muted: (video.muted = !video.muted) });
     },
     get posVolume(): void {
-      const volume = currentVolume < 1 ? (video.volume += 0.1) : video.volume;
+      const volume = currentVolume < 1 ? (video.volume += 0.01) : video.volume;
       return setVideo({ ...video, volume: volume });
     },
     get negVolume(): void {
-      const volume = currentVolume > 0 ? (video.volume -= 0.1) : video.volume;
+      const volume = currentVolume > 0 ? (video.volume -= 0.01) : video.volume;
       return setVideo({ ...video, volume: volume });
     },
     get fullScreen(): Promise<void> | void {
       if (video.requestFullscreen) return video.requestFullscreen();
-      if (video.webkitRequestFullScreen) return video.webkitRequestFullScreen();
-      if (video.mozRequestFullScreen) return video.mozRequestFullScreen();
-      if (video.msRequestFullscreen) return video.msRequestFullscreen();
-      return;
+      else if (video.webkitRequestFullScreen)
+        return video.webkitRequestFullScreen();
+      else if (video.mozRequestFullScreen) return video.mozRequestFullScreen();
+      else if (video.msRequestFullscreen) return video.msRequestFullscreen();
+      else return alert("지원하지 않는 브라우저 입니다.");
     },
-    currentTime: currentTime,
   };
 
   useEffect(() => {
     if (!!video && isPlay) {
       const executeCallback = () => {
-        setCurrentTime(video.currentTime);
+        console.log("play");
+        setVideo({ ...video, currentTime: video.currentTime });
       };
       const timeInterval = setInterval(executeCallback, 100);
+      if (video.ended || video.paused) {
+        setIsPlay(!isPlay);
+      }
       return () => clearInterval(timeInterval);
     }
-  }, [isPlay, video]);
+  }, [video, isPlay]);
 
-  return { video, setVideo, controls };
+  return { video, controls, setVideo };
 };

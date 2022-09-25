@@ -12,4 +12,4 @@ interface ExitFullScreen {
   msExitFullscreen?: () => void;
 }
 
-export type Video = (HTMLVideoElement & FullScreen & ExitFullScreen) | null;
+export type Video = HTMLVideoElement & FullScreen & ExitFullScreen;

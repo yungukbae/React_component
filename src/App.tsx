@@ -1,9 +1,9 @@
-import VideoCC from "./component/video/VideoCC";
+import Video from "./component/video";
 
 const App = () => {
   return (
     <div className="App">
-      <VideoCC />
+      <Video />
     </div>
   );
 };
