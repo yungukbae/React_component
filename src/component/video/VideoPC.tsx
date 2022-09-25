@@ -1,13 +1,9 @@
 import React from "react";
+import { Video } from "../../hook/types";
 import Controls from "./Controls";
 
 interface Props {
-  video:
-    | (HTMLVideoElement & {
-        webkitEnterFullscreen?: () => void;
-        webkitExitFullscreen?: () => void;
-      })
-    | null;
+  video: Video;
   getInstance: (instance: HTMLVideoElement | null) => void;
   controls: Record<string, Promise<void> | void | number> | null;
 }

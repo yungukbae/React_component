@@ -1,25 +1,8 @@
 import { useEffect, useState } from "react";
-
-// interface useVideoControls {}
-
-interface FullScreen {
-  requestFullscreen?: () => void;
-  mozRequestFullScreen?: () => void;
-  webkitRequestFullScreen?: () => void;
-  msRequestFullscreen?: () => void;
-}
-
-interface ExitFullScreen {
-  exitFullscreen?: () => void;
-  mozCancelFullScreen?: () => void;
-  webkitExitFullscreen?: () => void;
-  msExitFullscreen?: () => void;
-}
+import { Video } from "./types";
 
 export const useVideoControls = () => {
-  const [video, setVideo] = useState<
-    (HTMLVideoElement & FullScreen & ExitFullScreen) | null
-  >(null);
+  const [video, setVideo] = useState<Video>(null);
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState(0);
 

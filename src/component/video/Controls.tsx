@@ -1,11 +1,7 @@
 import React from "react";
+import { Video } from "../../hook/types";
 interface Props {
-  video:
-    | (HTMLVideoElement & {
-        webkitEnterFullscreen?: () => void;
-        webkitExitFullscreen?: () => void;
-      })
-    | null;
+  video: Video;
   controls: Record<string, Promise<void> | void | number>;
 }
 
