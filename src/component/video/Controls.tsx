@@ -1,14 +1,20 @@
-import React from 'react'
+import React from "react";
 interface Props {
-  video: HTMLVideoElement | null;
-  play: Record<string, Promise<void> | void>
+  video:
+    | (HTMLVideoElement & {
+        webkitEnterFullscreen?: () => void;
+        webkitExitFullscreen?: () => void;
+      })
+    | null;
+  controls: Record<string, Promise<void> | void>;
 }
 
-const Controls:React.FC<Props> = ({ video, play }) => <>
+const Controls: React.FC<Props> = ({ video, controls }) => (
+  <>
     <div id="video-controls" className="controls" data-state="hidden">
       <button
         id="playpause"
-        onClick={() => play.ppBtn}
+        onClick={() => controls.ppBtn}
         type="button"
         data-state="play"
       >
@@ -16,7 +22,7 @@ const Controls:React.FC<Props> = ({ video, play }) => <>
       </button>
       <button
         id="stop"
-        onClick={() => play.reset}
+        onClick={() => controls.reset}
         type="button"
         data-state="stop"
       >
@@ -29,7 +35,7 @@ const Controls:React.FC<Props> = ({ video, play }) => <>
         </div> */}
       <button
         id="mute"
-        onClick={() => play.mute}
+        onClick={() => controls.mute}
         type="button"
         data-state="mute"
       >
@@ -37,7 +43,7 @@ const Controls:React.FC<Props> = ({ video, play }) => <>
       </button>
       <button
         id="volinc"
-        onClick={() => play.posVolume}
+        onClick={() => controls.posVolume}
         type="button"
         data-state="volup"
       >
@@ -45,17 +51,24 @@ const Controls:React.FC<Props> = ({ video, play }) => <>
       </button>
       <button
         id="voldec"
-        onClick={() => play.negVolume}
+        onClick={() => controls.negVolume}
         type="button"
         data-state="voldown"
       >
         Vol-
       </button>
-      <button id="fs" onClick={() => play.fullScreen} type="button" data-state="go-fullscreen">
+      <button
+        id="fs"
+        onClick={() => controls.fullScreen}
+        type="button"
+        data-state="go-fullscreen"
+      >
         Fullscreen
       </button>
     </div>
     <div>{video && <h1>{Math.floor(video.volume * 10)}</h1>}</div>
     <div>{video && `${video.muted}`}</div>
-</>
+  </>
+);
+
 export default Controls;
