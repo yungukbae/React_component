@@ -2,9 +2,14 @@ import React from "react";
 import Controls from "./Controls";
 
 interface Props {
-  video: HTMLVideoElement | null;
+  video:
+    | (HTMLVideoElement & {
+        webkitEnterFullscreen?: () => void;
+        webkitExitFullscreen?: () => void;
+      })
+    | null;
   getInstance: (instance: HTMLVideoElement | null) => void;
-  controls: Record<string, Promise<void> | void> | null;
+  controls: Record<string, Promise<void> | void | number> | null;
 }
 const VideoPC: React.FC<Props> = ({ video, controls, getInstance }) => (
   <>

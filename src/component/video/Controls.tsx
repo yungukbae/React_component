@@ -6,7 +6,7 @@ interface Props {
         webkitExitFullscreen?: () => void;
       })
     | null;
-  controls: Record<string, Promise<void> | void>;
+  controls: Record<string, Promise<void> | void | number>;
 }
 
 const Controls: React.FC<Props> = ({ video, controls }) => (
@@ -68,6 +68,7 @@ const Controls: React.FC<Props> = ({ video, controls }) => (
     </div>
     <div>{video && <h1>{Math.floor(video.volume * 10)}</h1>}</div>
     <div>{video && `${video.muted}`}</div>
+    <div>{video && Math.ceil((controls.currentTime as number) * 10) / 10}</div>
   </>
 );
 
