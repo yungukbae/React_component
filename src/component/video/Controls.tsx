@@ -118,11 +118,11 @@ const VolumeIcon: React.FC<Props> = ({ video, controls }) => {
       >
         {video.muted ? <VolumeOffIcon /> : volume(video.volume)}
       </IconButton>
-      <Slider
+      {/* <Slider
         aria-label="Volume"
         value={video.volume * 10}
         onChange={handleChange}
-      />
+      /> */}
     </Stack>
   );
 };
