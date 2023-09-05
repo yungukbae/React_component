@@ -29,11 +29,12 @@ export const useVideoControls = () => {
       return setVideo({ ...video, volume: volume });
     },
     get fullScreen(): Promise<void> | void {
-      if (video.requestFullscreen) return video.requestFullscreen();
-      else if (video.webkitRequestFullScreen)
-        return video.webkitRequestFullScreen();
-      else if (video.mozRequestFullScreen) return video.mozRequestFullScreen();
-      else if (video.msRequestFullscreen) return video.msRequestFullscreen();
+      
+        video.requestFullscreen && return video.requestFullscreen();
+      video.webkitRequestFullScreen && return video.webkitRequestFullScreen();
+      video.mozRequestFullScreen && return video.mozRequestFullScreen();
+      video.msRequestFullscreen && return video.msRequestFullscreen();
+        
       else return alert("지원하지 않는 브라우저 입니다.");
     },
   };
